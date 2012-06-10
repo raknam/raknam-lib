@@ -92,9 +92,3 @@ class FrenchSocialSecurityValidator extends RaknamValidator {
     }
 
 }
-
-return;
-
-$validator = new FrenchSocialSecurityValidator();
-$validator->validate("185073411111174");
-echo $validator->toStringLastCheck(true);

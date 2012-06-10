@@ -99,11 +99,3 @@ class RIOValidator extends RaknamValidator {
         '95' => 'Ocito', 
         '96' => 'Verizon');
 }
-
-return;
-
-$validator = new RIOValidator();
-$validator->validate("04P1234566M00612345678");
-echo $validator->toStringLastCheck(true);
-$validator->validate("03P1234565590612345678");
-echo $validator->toStringLastCheck(true);
