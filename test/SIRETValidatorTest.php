@@ -10,6 +10,6 @@ class SIRETCardValidatorTest extends PHPUnit_Framework_TestCase
 
     public function testCheck()
     {
-        $this->assertTrue($this->validator->check("73282932000074"));
+        $this->assertTrue($this->validator->validate("73282932000074"));
     }
 }
