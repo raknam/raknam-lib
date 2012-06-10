@@ -32,7 +32,7 @@ class FrenchSocialSecurityValidator extends RaknamValidator {
      * @throws Exception throw a exception if a rule is broken
      * @see RaknamValidator::checkdata()
      */
-    private function _checkdata() {
+    private function _checkData() {
         if (!is_numeric($this->full))                     throw new Exception("Not numeric (full)");
         if (!in_array($this->sex, array(1,2)))            throw new Exception("Invalid Sex");
         if ($this->month > 12 && $this->month < 20)       throw new Exception("Invalid Month");
@@ -57,7 +57,7 @@ class FrenchSocialSecurityValidator extends RaknamValidator {
         $this->_initData($numSS);
 
         try {
-            $this->_checkdata();
+            $this->_checkData();
         } catch (Exception $e) {
             $this->lastException = $e;
             return false;
@@ -91,6 +91,8 @@ class FrenchSocialSecurityValidator extends RaknamValidator {
     }
 
 }
+
+return;
 
 $validator = new FrenchSocialSecurityValidator();
 $validator->validate("185073411111174");
