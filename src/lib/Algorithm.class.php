@@ -1,7 +1,7 @@
 <?php
 class Algorithm
 {
-    function luhn($data) {
+    public static function Luhn($data) {
         if (!is_numeric($data)) return false;
         $data = str_split($data);
         $sum = 0;

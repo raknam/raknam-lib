@@ -10,6 +10,6 @@ class CreditCardValidatorTest extends PHPUnit_Framework_TestCase
 
     public function testCheck()
     {
-        $this->assertTrue($this->validator->check("1234567890123452"));
+        $this->assertTrue($this->validator->validate("1234567890123452"));
     }
 }

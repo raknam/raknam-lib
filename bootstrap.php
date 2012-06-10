@@ -5,10 +5,10 @@ spl_autoload_register(
         if ($classes === null) {
             $classes = array(
             	'raknamvalidator' => '/src/lib/RaknamValidator.class.php',    
-            	'creditcardvalidator' => '/src/validators/credit-card.php',
+            	'creditcardvalidator' => '/src/validators/CreditCardValidator.class.php',
                 'frenchsocialsecurityvalidator' => '/src/validators/FrenchSocialSecurityValidator.class.php',
                 'algorithm' => '/src/lib/Algorithm.class.php',
-                'siretvalidator' => '/src/validators/siret.php',
+                'siretvalidator' => '/src/validators/SIRETValidator.class.php',
                 'riovalidator' => '/src/validators/RIOValidator.class.php'
             );
         }
