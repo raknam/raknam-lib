@@ -1,4 +1,5 @@
 <?php
+
 class FrenchSocialSecurityValidator extends RaknamValidator {
 
     private $sex;

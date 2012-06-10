@@ -4,12 +4,12 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'creditcardvalidator' => '/src/validators/credit-card.php',
+            	'raknamvalidator' => '/src/lib/RaknamValidator.class.php',    
+            	'creditcardvalidator' => '/src/validators/credit-card.php',
                 'frenchsocialsecurityvalidator' => '/src/validators/FrenchSocialSecurityValidator.class.php',
-                'raknamvalidator' => '/src/lib/RaknamValidator.class.php',
-                'algorithm' => '/src/lib/luhnAlgorithm.php',
+                'algorithm' => '/src/lib/Algorithm.class.php',
                 'siretvalidator' => '/src/validators/siret.php',
-                'riovalidator' => '/src/validators/rio.php'
+                'riovalidator' => '/src/validators/RIOValidator.class.php'
             );
         }
         $cn = strtolower($class);

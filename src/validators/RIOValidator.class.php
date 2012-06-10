@@ -1,7 +1,5 @@
 <?php
 
-require_once('../lib/RaknamValidator.class.php');
-
 class RIOValidator extends RaknamValidator {
     
     private $oo;
