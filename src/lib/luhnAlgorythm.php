@@ -9,8 +9,8 @@ function luhn($data) {
         $c = $data[count($data) - ($i + 1)];
         $val = ($odd ? $c : $c * 2);
         if ($val > 9) $val -= 9;
-            $sum += $val;
-            $odd = !$odd;
+        $sum += $val;
+        $odd = !$odd;
     }
     return $sum;
 }
