@@ -7,10 +7,10 @@
 		"Breizh Mobile" => "49",
 		"Budget Telecom" => "68",
 		"Carrefour" => "54",
-		"Coriolis Télécom" => "10",
-		"Coriolis Télécom Entreprise" => "01",
+		"Coriolis TÃ©lÃ©com" => "10",
+		"Coriolis TÃ©lÃ©com Entreprise" => "01",
 		"Free" => "04",
-		"Futur Télécom" => "60",
+		"Futur TÃ©lÃ©com" => "60",
 		"Keyyo Mobile" => "68",
 		"Lycamobile" => "05",
 		"M6 Mobile (by Orange) " => "01",
@@ -22,21 +22,21 @@
 		"Orange" => "01",
 		"Ortel Mobile" => "23",
 		"Prixtel" => "69",
-		"Réglo Mobile / E. Leclerc Mobile" => "66",
-		"La Poste Mobile / Simplicime / Simpleo / Débitel" => "61",
+		"RÃ©glo Mobile / E. Leclerc Mobile" => "66",
+		"La Poste Mobile / Simplicime / Simpleo / DÃ©bitel" => "61",
 		"Sim+ " => "68",
 		"Simyo" => "23",
 		"Symacom " => "55",
 		"SFR" => "02",
-		"Télé2" => "50",
+		"TÃ©lÃ©2" => "50",
 		"Ten" => "53",
 		"Transatel (Bouygues)" => "21",
 		"Transatel (Orange)" => "56",
 		"U-mobile" => "21",
 		"Virgin Mobile / Breizh Mobile / Omea Telecom / Omer Telecom" => "49",
-		"Zéro-Forfait / Call In Europe" => "68",
+		"ZÃ©ro-Forfait / Call In Europe" => "68",
 		"Ftmvno " => "48",
-		"France Télécom" => "90",
+		"France TÃ©lÃ©com" => "90",
 		"Sybase365 " => "91",
 		"Mblox " => "92",
 		"Netsize " => "93",
@@ -75,9 +75,9 @@
 			echo sprintf("RIO: %s %s %s %s [%s] : %s - %s<br /><br />", 
 				$oo, $quality, $contract, $checksum, $phone_number, $res, ($res == $checksum ? "valid" : "invalid"));
 			
-			echo "Opérator: ".$oo." ".$invert_operators[$oo]."<br />";
-			echo "Qualité: ".($quality == "P" ? "Particulier" : "Entreprise")."<br />";
-			echo "Numéro de contrat: ".$contract."<br /><br />";
+			echo "OpÃ©rator: ".$oo." ".$invert_operators[$oo]."<br />";
+			echo "QualitÃ©: ".($quality == "P" ? "Particulier" : "Entreprise")."<br />";
+			echo "NumÃ©ro de contrat: ".$contract."<br /><br />";
 		}
 		
 		return $res == $checksum;
@@ -85,11 +85,3 @@
 	
 	checkRIO("04P1234566M0", "0612345678", true);
 	checkRIO("03P123456559", "0612345678", true);
-	
-
-	
-	
-	
-	
-	
-	
