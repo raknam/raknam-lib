@@ -1,6 +1,6 @@
 <?php
 
-	function luth($data) {
+	function luhn($data) {
 		if (!is_numeric($data)) return false;
 		$data = str_split($data);
 		
