@@ -1,7 +1,4 @@
 <?php
-
-require_once('../lib/RaknamValidator.class.php');
-
 class FrenchSocialSecurityValidator extends RaknamValidator {
 
     private $sex;
@@ -100,6 +97,3 @@ return;
 $validator = new FrenchSocialSecurityValidator();
 $validator->validate("185073411111174");
 echo $validator->toStringLastCheck(true);
-
-
-
