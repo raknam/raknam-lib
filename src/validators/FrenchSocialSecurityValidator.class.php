@@ -1,7 +1,4 @@
 <?php
-
-require_once('../lib/RaknamValidator.class.php');
-
 class FrenchSocialSecurityValidator extends RaknamValidator {
 
     private $sex;

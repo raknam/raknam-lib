@@ -1,15 +1,13 @@
 <?php
+class CreditCardValidator
+{
+    function check($cc, $debug = false) {
+        $luhn  = Algorithm::luhn($cc);
 
-require_once('../lib/luhnAlgorythm.php');
+        if ($debug) {
+            echo $cc." : ".$luhn." - ".($luhn % 10 == 0 ? "valid" : "invalid");
+        }
 
-function checkSiret($cc, $debug = false) {
-    $luhn  = luhn($cc);
-
-    if ($debug) {
-        echo $cc." : ".$luhn." - ".($luhn % 10 == 0 ? "valid" : "invalid");
+        return $luhn % 10 == 0;
     }
-
-    return $luhn % 10 == 0;
 }
-
-checkSiret("1234567890123452", true);
