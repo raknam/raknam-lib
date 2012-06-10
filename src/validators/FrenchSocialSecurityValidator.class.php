@@ -13,14 +13,7 @@ class FrenchSocialSecurityValidator extends RaknamValidator {
     private $checksum;
 
     private $full;
-    private $lastException;
 
-    public function __contruct() { }
-
-    public function getLastException() {
-        return $this->lastException;
-    }
-    
     /**
      * Check given data according tohttp://fr.wikipedia.org/wiki/Numéro_de_sécurité_sociale#Signification_des_chiffres_du_NIR
      * @throws Exception throw a exception if a rule is broken
@@ -41,6 +34,11 @@ class FrenchSocialSecurityValidator extends RaknamValidator {
         if ($this->checksum == 0 || $this->checksum > 97) throw new Exception("Invalid Checksum");
     }
 
+    /**
+     * Do the validation
+     * @see RaknamValidator::validate()
+     * @return bool true if given data is valid
+     */
     public function validate($numSS) {
         $this->full     = $numSS;
         $this->sex      = substr($numSS, 0, 1);
@@ -57,32 +55,39 @@ class FrenchSocialSecurityValidator extends RaknamValidator {
             $this->lastException = $e;
             return false;
         }
-        return $this->checksumCalc() == $this->checksum;
+        $res = $this->checksumCalc() == (int)$this->checksum;
+        if (!$res) $this->lastException = new Exception("Invalid Checksum");
+        return $res;
     }
 
     private function checksumCalc() {
-        return true;
+        $num = $this->sex.$this->year.$this->month.$this->dept.$this->city.$this->act;
+        $num = 97 - ($num - (floor($num / 97) * 97));
+        return $num;
+    }
+    
+    /**
+     * Return a debug stack on last validation
+     * @param bool $webres if true, return <br/> instead \n
+     * @return string return debug stack
+     */
+    public function toStringLastCheck($webres = false) {
+        $res = "Numéro de Sécurité Sociale Français\n\n";
+        $res.= $this->full."\n\n";
+        $res.= sprintf("Sexe: %d - %s\n", $this->sex, $this->sex==1?"Homme":"Femme");
+        $res.= sprintf("Mois/Année de naissance: %02d/%02d\n", $this->month, $this->year);
+        $res.= sprintf("Département/Commune: %05d\n", $this->dept.$this->city);
+        $res.= sprintf("Numéro d'ordre de l'acte de naissance: %03d\n", $this->act);
+        $res.= sprintf("Checksum: %02d\n", $this->checksum);
+        
+        return $webres?nl2br($res):$res;
     }
 
 }
 
-
-/*function checkFSS($numSS) {
-
-
-$res = calcCCC($sex, $year, $month, $dept, $city, $act);
-
-if ($debug) {
-echo sprintf("Social Security Number: %s %s %s %s %s %s %s : %s - %s<br /><br />",
-$oo, $quality, $contract, $checksum, $phone_number, $res, ($res == $checksum ? "valid" : "invalid"));
-
-echo "Opérator: ".$oo." ".$invert_operators[$oo]."<br />";
-echo "Qualité: ".($quality == "P" ? "Particulier" : "Entreprise")."<br />";
-echo "Numéro de contrat: ".$contract."<br /><br />";
-}
-
-return $res == $checksum;
-}*/
-
 $validator = new FrenchSocialSecurityValidator();
-var_dump($validator->validate("185073415211111"));
+$validator->validate("185073411111174");
+echo $validator->toStringLastCheck(true);
+
+
+
