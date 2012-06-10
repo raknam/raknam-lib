@@ -18,6 +18,7 @@ class RioValidatorTest extends PHPUnit_Framework_TestCase
     
     public function testToStringLastCheck() {
         $this->validator->validate("03P1234565590612345678");
-        $this->assertTrue(!empty($this->validator->toStringLastCheck()), "testToStringLastCheck not empty");
+        $res = $this->validator->toStringLastCheck();
+        $this->assertTrue(!empty($res), "testToStringLastCheck not empty");
     }
 }
