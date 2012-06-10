@@ -15,10 +15,27 @@ class FrenchSocialSecurityValidator extends RaknamValidator {
     private $full;
 
     /**
+     * Split data from full SS id
+     * @param string $numSS must be 15 ciffers
+     */
+    private function _initData($numSS) {
+        $this->full     = $numSS;
+        
+        $this->sex      = substr($numSS, 0, 1);
+        $this->year     = substr($numSS, 1, 2);
+        $this->month    = substr($numSS, 3, 2);
+        $this->dept     = str_replace(array("A", "B"), array("1", "2"), substr($numSS, 5, 2));	//May be on 3 ciffers if $dept start with 97 or 98
+        $this->city     = substr($numSS, 7, 3);
+        $this->act      = substr($numSS, 10, 3);
+        $this->checksum = substr($numSS, 13, 2);
+    }
+    
+    /**
      * Check given data according tohttp://fr.wikipedia.org/wiki/Numéro_de_sécurité_sociale#Signification_des_chiffres_du_NIR
      * @throws Exception throw a exception if a rule is broken
+     * @see RaknamValidator::checkdata()
      */
-    private function checkdata() {
+    private function _checkdata() {
         if (!is_numeric($this->full))                     throw new Exception("Not numeric (full)");
         if (!in_array($this->sex, array(1,2)))            throw new Exception("Invalid Sex");
         if ($this->month > 12 && $this->month < 20)       throw new Exception("Invalid Month");
@@ -36,31 +53,24 @@ class FrenchSocialSecurityValidator extends RaknamValidator {
 
     /**
      * Do the validation
-     * @see RaknamValidator::validate()
      * @return bool true if given data is valid
+     * @see RaknamValidator::validate()
      */
     public function validate($numSS) {
-        $this->full     = $numSS;
-        $this->sex      = substr($numSS, 0, 1);
-        $this->year     = substr($numSS, 1, 2);
-        $this->month    = substr($numSS, 3, 2);
-        $this->dept     = str_replace(array("A", "B"), array("1", "2"), substr($numSS, 5, 2));	//May be on 3 ciffers if $dept start with 97 or 98
-        $this->city     = substr($numSS, 7, 3);
-        $this->act      = substr($numSS, 10, 3);
-        $this->checksum = substr($numSS, 13, 2);
+        $this->_initData($numSS);
 
         try {
-            $this->checkdata();
+            $this->_checkdata();
         } catch (Exception $e) {
             $this->lastException = $e;
             return false;
         }
-        $res = $this->checksumCalc() == (int)$this->checksum;
+        $res = $this->_checksumCalc() == (int)$this->checksum;
         if (!$res) $this->lastException = new Exception("Invalid Checksum");
         return $res;
     }
 
-    private function checksumCalc() {
+    private function _checksumCalc() {
         $num = $this->sex.$this->year.$this->month.$this->dept.$this->city.$this->act;
         $num = 97 - ($num - (floor($num / 97) * 97));
         return $num;
