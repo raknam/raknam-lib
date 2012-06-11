@@ -17,7 +17,7 @@ class RIOValidator extends RaknamValidator {
     }
     
     private function _checkData() {
-        if (!isset(self::$oolist[$this->oo]))              throw new Exception("Invalid OO");
+        if (!isset(self::$oolist[$this->oo]))          throw new Exception("Invalid OO");
         if (!in_array($this->quality, array('P','E'))) throw new Exception("Invalid Quality");
         foreach(str_split($this->checksum) as $c)
             if (strpos(self::CHARS, $c) === false)     throw new Exception("Invalid Checksum");
@@ -26,7 +26,7 @@ class RIOValidator extends RaknamValidator {
     }
     
     public function validate($rio) {
-         $this->_initData($rio);
+        $this->_initData($rio);
 
         try {
             $this->_checkData();
