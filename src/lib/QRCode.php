@@ -4,6 +4,7 @@ require_once('Grid.php');
 
 	class QRCode {
 		
+		const   ALPHANUM_ENCODING_STRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
 		private $grid;
 		
 		public function __construct(){
@@ -100,7 +101,7 @@ require_once('Grid.php');
 			}
 			
 			//character count
-			if ($version < 10) { $pad = 10; } else if ($version < 27) { $pad = 12; } else {	$pad = 14; }
+			if ($version < 10) { $pad = 10; } else if ($version < 27) { $pad = 12; } else { $pad = 14; }
 			$char_count = str_pad(decbin(strlen($data)), $pad, "0", STR_PAD_LEFT);
 			
 			//mode
@@ -108,19 +109,58 @@ require_once('Grid.php');
 			
 			$res = $this->getFinalData($mode, $char_count, $groups);
 			
-			$this->checkNumericDataLength($data, $res, $pad);
+			$this->checkDataLength($mode, $data, $res, $pad);
 			
 			return $res;
 		}
-		private function checkNumericDataLength($data, $res, $char_count_bits){
-			$d = strlen($data);
-			if ($d % 3 == 0) $r = 0; else if ($d % 3 == 1) $r = 4; else $r = 7;
-			$b = 4 + $char_count_bits + 10 * ((int)($d / 3)) + $r;
+		
+		public function encodeAlphaNumericData($data, $version) {
+			$groups = str_split($data, 2);
+			foreach($groups as &$grp){
+				$padsize = isset($grp[1]) ? 11 : 6;
+				$val = 0;
+				for ($i=0; $i<2; $i++){
+					if (!isset($grp[$i])) continue;
+					$val+= $this->getAlphaNumCode($grp[$i]);
+					if ($i == 0 && isset($grp[1])) $val = 45 * $val;
+				}
+				$grp = decbin($val);
+				$grp = str_pad($grp, $padsize, "0", STR_PAD_LEFT);
+			}
 			
-			if (strlen($res) != $b)
-				throw new Exception("Error on calculation - Length invalid");
+			//character count
+			if ($version < 10) { $pad = 9; } else if ($version < 27) { $pad = 11; } else { $pad = 13; }
+			$char_count = str_pad(decbin(strlen($data)), $pad, "0", STR_PAD_LEFT);
+			
+			//mode
+			$mode = "0010"; //alphanumeric
+			
+			$res = $this->getFinalData($mode, $char_count, $groups);
+			
+			$this->checkDataLength($mode, $data, $res, $pad);
+			
+			return $res;
+		}
+		private function getAlphaNumCode($char) {
+			return strpos(self::ALPHANUM_ENCODING_STRING, $char);
 		}
 		
+		
+		private function checkDataLength($mode, $data, $res, $char_count_bits){
+			$d = strlen($data);
+			switch($mode){
+				case "0001": //numeric
+					if ($d % 3 == 0) $r = 0; else if ($d % 3 == 1) $r = 4; else $r = 7;
+					$b = 4 + $char_count_bits + 10 * floor($d / 3) + $r;
+					break;
+				case "0010": //alphanumeric
+					$b = 4 + $char_count_bits + 11 * floor($d / 2) + 6 * ($d % 2);
+					break;
+			}
+			
+			if (strlen($res) != $b)
+				throw new Exception("Error on calculation - Length invalid ".strlen($data)." ".$b);
+		}
 		private function getFinalData(&$mode, &$char_count, &$data) {
 			return sprintf("%s%s%s", $mode, $char_count, implode("",$data));
 		}
@@ -136,6 +176,6 @@ echo "01234567 :: ".$qrcode->encodeNumericData("01234567", 1);
 echo "<br />";
 echo "0123456789012345 :: ".$qrcode->encodeNumericData("0123456789012345", 1);
 echo "<br />";
-
+echo "AC-42 :: ".$qrcode->encodeAlphaNumericData("AC-42", 1);
 
 
