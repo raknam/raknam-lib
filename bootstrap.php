@@ -10,7 +10,7 @@ spl_autoload_register(
                 'algorithm' => '/src/lib/Algorithm.class.php',
                 'siretvalidator' => '/src/validators/SIRETValidator.class.php',
                 'riovalidator' => '/src/validators/RIOValidator.class.php',
-                'qrcode' => '/src/validators/QRCode.php'
+                'qrcode' => '/src/lib/QRCode.php'
             );
         }
         $cn = strtolower($class);
