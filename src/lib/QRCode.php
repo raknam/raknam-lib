@@ -87,8 +87,55 @@ require_once('Grid.php');
 		
 		public function export(){
 			$this->grid->export();
-		}	
+		}
+		
+		
+		/**** ENCODING ****/
+		public function encodeNumericData($data, $version) {
+			$groups = str_split($data, 3);
+			foreach($groups as &$grp){
+				$padsize = (strlen($grp) == 3 ? 10 : (strlen($grp) == 2 ? 7 : 4));
+				$grp = decbin($grp);
+				$grp = str_pad($grp, $padsize, "0", STR_PAD_LEFT);
+			}
+			
+			//character count
+			if ($version < 10) { $pad = 10; } else if ($version < 27) { $pad = 12; } else {	$pad = 14; }
+			$char_count = str_pad(decbin(strlen($data)), $pad, "0", STR_PAD_LEFT);
+			
+			//mode
+			$mode = "0001"; //numeric
+			
+			$res = $this->getFinalData($mode, $char_count, $groups);
+			
+			$this->checkNumericDataLength($data, $res, $pad);
+			
+			return $res;
+		}
+		private function checkNumericDataLength($data, $res, $char_count_bits){
+			$d = strlen($data);
+			if ($d % 3 == 0) $r = 0; else if ($d % 3 == 1) $r = 4; else $r = 7;
+			$b = 4 + $char_count_bits + 10 * ((int)($d / 3)) + $r;
+			
+			if (strlen($res) != $b)
+				throw new Exception("Error on calculation - Length invalid");
+		}
+		
+		private function getFinalData(&$mode, &$char_count, &$data) {
+			return sprintf("%s%s%s", $mode, $char_count, implode("",$data));
+		}
+		/**** end ENCODING ****/
+		
 	}
 	
 $qrcode = new QRCode();
 $qrcode->export();
+
+echo "<br />";
+echo "01234567 :: ".$qrcode->encodeNumericData("01234567", 1);
+echo "<br />";
+echo "0123456789012345 :: ".$qrcode->encodeNumericData("0123456789012345", 1);
+echo "<br />";
+
+
+
