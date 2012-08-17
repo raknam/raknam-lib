@@ -24,20 +24,20 @@ class QRCodeTest extends PHPUnit_Framework_TestCase
     	$data = "01234567";
     	$version = 1;
     	
-    	$this->assertTrue($this->qrcode->encodeNumericData($data, $version) == "0001000000100000000011000101011001100001100000000");
+    	$this->assertTrue($this->qrcode->encodeNumericData($data, $version) == "000100000010000000001100010101100110000110000");
     }
     
 	public function testEncodingB(){
     	$data = "0123456789012345";
     	$version = 1;
     	
-    	$this->assertTrue($this->qrcode->encodeNumericData($data, $version) == "0001000001000000000011000101011001101010011011100001010011101010010100000000");
+    	$this->assertTrue($this->qrcode->encodeNumericData($data, $version) == "000100000100000000001100010101100110101001101110000101001110101001010000");
     }
     
 	public function testEncodingC(){
     	$data = "AC-42";
     	$version = 1;
     	
-    	$this->assertTrue($this->qrcode->encodeAlphaNumericData($data, $version) == "0010000000101001110011101110011100100001000000000");
+    	$this->assertTrue($this->qrcode->encodeAlphaNumericData($data, $version) == "001000000010100111001110111001110010000100000");
     }
 }
