@@ -14,9 +14,8 @@ class QRCodeTest extends PHPUnit_Framework_TestCase
     	$quality = "M";
     	
     	$data = $this->qrcode->encodeNumericData($data, $version);
-    	$this->assertTrue($data == "000100000010000000001100010101100110000110000000");
 		$data = $this->qrcode->getCodewords($data, $version, $quality);
-		$this->assertTrue(implode('', $data) == "00010000001000000000110001010110011000011000000011101100000100011110110000010001111011000001000111101100000100011110110000010001");
+		$this->assertTrue(implode('', $data) == "00010000001000000000110001010110011000011000000011101100000100011110110000010001111011000001000111101100000100011110110000010001", "Codewords ok");
 		//$data = $this->qrcode->calculateErrorCorrection($data, $version, $quality);
     }
     
