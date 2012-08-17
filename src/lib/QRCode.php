@@ -5,6 +5,13 @@ require_once('Grid.php');
 	class QRCode {
 		
 		const   ALPHANUM_ENCODING_STRING = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+		static  $CODEWORDS_SIZES = array(
+			"1" => array(19,16,13,9), "2" => array(34,28,22,16),
+		);
+		static  $REMAINDER_BITS = array(
+			"1"=>0,"2"=>7,"3"=>7,"4"=>7,"5"=>7,"6"=>7,
+		);
+		static  $CODEWORD_PADDING = array("11101100","00010001");
 		private $grid;
 		
 		public function __construct(){
@@ -107,7 +114,7 @@ require_once('Grid.php');
 			//mode
 			$mode = "0001"; //numeric
 			
-			$res = $this->getFinalData($mode, $char_count, $groups);
+			$res = $this->getBitstream($mode, $char_count, $groups);
 			
 			$this->checkDataLength($mode, $data, $res, $pad);
 			
@@ -135,7 +142,7 @@ require_once('Grid.php');
 			//mode
 			$mode = "0010"; //alphanumeric
 			
-			$res = $this->getFinalData($mode, $char_count, $groups);
+			$res = $this->getBitstream($mode, $char_count, $groups);
 			
 			$this->checkDataLength($mode, $data, $res, $pad);
 			
@@ -158,24 +165,26 @@ require_once('Grid.php');
 					break;
 			}
 			
-			if (strlen($res) != $b)
+			if (strlen($res) != $b + 4)
 				throw new Exception("Error on calculation - Length invalid ".strlen($data)." ".$b);
 		}
-		private function getFinalData(&$mode, &$char_count, &$data) {
-			return sprintf("%s%s%s", $mode, $char_count, implode("",$data));
+		private function getBitstream(&$mode, &$char_count, &$data) {
+			return sprintf("%s%s%s0000", $mode, $char_count, implode("",$data));
+		}
+		public function getCodewords($data, $version, $quality){
+			$groups = str_split($data, 8);
+			if (strlen($groups[count($groups) - 1]) < 8)
+				$groups[count($groups) - 1] = str_pad($groups[count($groups) - 1], 8, "0");
+				
+			//Padding
+			$odd = false;
+			$max = self::$CODEWORDS_SIZES[$version][($quality == "L" ? 0 : ($quality == "M" ? 1 : ($quality == "Q" ? 2 : 3)))];
+			for ($i = count($groups); $i < $max; $i++) {
+				$groups[] = self::$CODEWORD_PADDING[$odd];
+				$odd = !$odd;
+			}
+				
+			return $groups;
 		}
 		/**** end ENCODING ****/
-		
 	}
-	
-$qrcode = new QRCode();
-$qrcode->export();
-
-echo "<br />";
-echo "01234567 :: ".$qrcode->encodeNumericData("01234567", 1);
-echo "<br />";
-echo "0123456789012345 :: ".$qrcode->encodeNumericData("0123456789012345", 1);
-echo "<br />";
-echo "AC-42 :: ".$qrcode->encodeAlphaNumericData("AC-42", 1);
-
-

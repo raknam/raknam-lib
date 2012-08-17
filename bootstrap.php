@@ -9,7 +9,8 @@ spl_autoload_register(
                 'frenchsocialsecurityvalidator' => '/src/validators/FrenchSocialSecurityValidator.class.php',
                 'algorithm' => '/src/lib/Algorithm.class.php',
                 'siretvalidator' => '/src/validators/SIRETValidator.class.php',
-                'riovalidator' => '/src/validators/RIOValidator.class.php'
+                'riovalidator' => '/src/validators/RIOValidator.class.php',
+                'qrcodeValidator' => '/src/validators/QRCodeValidator.class.php'
             );
         }
         $cn = strtolower($class);
