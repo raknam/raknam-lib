@@ -1,5 +1,5 @@
 <?php
-class RioValidatorTest extends PHPUnit_Framework_TestCase
+class QRCodeTest extends PHPUnit_Framework_TestCase
 {
     protected $validator;
 
