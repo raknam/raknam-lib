@@ -10,7 +10,7 @@ spl_autoload_register(
                 'algorithm' => '/src/lib/Algorithm.class.php',
                 'siretvalidator' => '/src/validators/SIRETValidator.class.php',
                 'riovalidator' => '/src/validators/RIOValidator.class.php',
-                'qrcode' => '/src/lib/QRCode.php',
+                'qrcode' => '/src/lib/QRCode.class.php',
                 'reedsolomon' => '/src/lib/ReedSolomon.class.php'
             );
         }
