@@ -1,6 +1,7 @@
 <?php
 
 require_once('Grid.php');
+require_once('ReedSolomon.class.php');
 
 	class QRCode {
 		
@@ -12,7 +13,11 @@ require_once('Grid.php');
 			"1"=>0,"2"=>7,"3"=>7,"4"=>7,"5"=>7,"6"=>7,
 		);
 		static  $CODEWORD_PADDING = array("11101100","00010001");
+		static  $ERRORCODE_SIZES = array(
+			"1" => array(7,10,13,17), "2" => array(10,16,22,28),
+		);
 		private $grid;
+		private $rs;
 		
 		public function __construct(){
 			$this->grid = new Grid(21);
@@ -20,6 +25,7 @@ require_once('Grid.php');
 			//$this->grid->setValue(10,10,1);
 			$this->setFinders();
 			$this->setTimePatterns();
+			$this->rs = ReedSolomon::GetInstance();
 		}
 		
 		//Version string "V-E" V=int(1~40) E=char(L,M,Q,H)
@@ -47,7 +53,6 @@ require_once('Grid.php');
 		}
 		
 		public function getSize(){ return $this->getVersionSize() * 4 + 17; }
-		public function getErrorCorrectionLevel(){ switch($this->getVersionType()) {case"L":return 7;case"M":return 15;case"Q":return 25;case"H":return 30;}}
 		
 		private function setFinders(){
 			$this->setFinder(0,0);
@@ -171,7 +176,7 @@ require_once('Grid.php');
 		private function getBitstream(&$mode, &$char_count, &$data) {
 			return sprintf("%s%s%s0000", $mode, $char_count, implode("",$data));
 		}
-		public function getCodewords($data, $version, $quality){
+		public function getCodewords(&$data, $version, $quality){
 			$groups = str_split($data, 8);
 			if (strlen($groups[count($groups) - 1]) < 8)
 				$groups[count($groups) - 1] = str_pad($groups[count($groups) - 1], 8, "0");
@@ -186,5 +191,17 @@ require_once('Grid.php');
 				
 			return $groups;
 		}
+		public function calculateErrorCorrection(&$data, $version, $quality) {
+		    foreach($data as $k => $d) $data[$k] = bindec($d);
+		    $data = $this->rs->rs_encode_msg($data, 10);
+		    
+		    foreach($data as $k => $d) $data[$k] = str_pad(decbin($d), 8, "0", STR_PAD_LEFT);
+		    return implode('', $data);
+		}
 		/**** end ENCODING ****/
 	}
+
+	
+	
+	
+	
