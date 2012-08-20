@@ -17,6 +17,4 @@
 			$grid->setDataBlock($i, $data[$i]);
 		}
 		
-		$grid->exportToHTML();
-		
-		var_dump($grid->exportToMatrix());
+		$grid->exportToHTML(10);

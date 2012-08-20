@@ -84,12 +84,12 @@
 		    return $matrix;
 		}
 		
-		public function exportToHTML(){
+		public function exportToHTML($cellSize=5){
 			echo '<table cellspacing="0" cellpadding="0">';
 			for($y=0;$y<$this->width; $y++){
 				echo '<tr>';
 				for($x = 0; $x < $this->height; $x++){
-					echo '<td style="'.($this->grid[$x][$y]?'background-color:black':'').';height:5px;width:5px"></td>';
+					echo '<td style="'.($this->grid[$x][$y]?'background-color:black':'').';height:'.$cellSize.'px;width:'.$cellSize.'px"></td>';
 				}
 				echo '</tr>';
 			}

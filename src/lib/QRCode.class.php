@@ -29,8 +29,7 @@ require_once('ReedSolomon.class.php');
 		
 		public function __construct($version = 1){
 			$this->grid = new QRCodeGrid($version);
-			//$this->grid->setValue(1,1,1);
-			//$this->grid->setValue(10,10,1);
+			$this->grid->setValue(8,$this->grid->height - 8,1);
 			$this->setFinders();
 			$this->setTimePatterns();
 			$this->rs = ReedSolomon::GetInstance();
@@ -227,7 +226,9 @@ require_once('ReedSolomon.class.php');
 		 * @return Grid
 		 */
 		public function generateGrid($data, $version, $quality){
-		    
+    		for ($i = 0; $i < count($data); $i++){
+    			$this->grid->setDataBlock($i, $data[$i]);
+    		}
 			return $this->grid;
 		}
 		/**** end ENCODING ****/
