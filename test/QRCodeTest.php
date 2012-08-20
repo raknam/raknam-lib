@@ -2,12 +2,28 @@
 class QRCodeTest extends PHPUnit_Framework_TestCase
 {
     protected $qrcode;
+    protected $grid;
     
     protected function setUp()
     {
         $this->qrcode = new QRCode();
+        $this->grid = new Grid(4);
     }
 
+    public function testGrid(){
+    	$this->assertEquals(array("0000","0000","0000","0000"), $this->grid->exportToMatrix(), "Grid size");
+    	$this->grid->setLine(1, 15);
+    	$this->assertEquals(array("0000","1111","0000","0000"), $this->grid->exportToMatrix(), "Line push");
+    	$this->grid->setCol(1, 15);
+    	$this->assertEquals(array("0100","1111","0100","0100"), $this->grid->exportToMatrix(), "Col push");
+    	$this->grid->setValue(3, 3, 1);
+    	$this->assertEquals(array("0100","1111","0100","0101"), $this->grid->exportToMatrix(), "Value push");
+    	$this->grid->invertCol(3);
+    	$this->assertEquals(array("0101","1110","0101","0100"), $this->grid->exportToMatrix(), "Col Invert push");
+    	$this->grid->invertLine(3);
+    	$this->assertEquals(array("0101","1110","0101","1011"), $this->grid->exportToMatrix(), "Line Invert push");
+    }
+    
     public function testAnnexeG(){
     	$data = "01234567";
     	$version = 1;

@@ -11,6 +11,8 @@ spl_autoload_register(
                 'siretvalidator' => '/src/validators/SIRETValidator.class.php',
                 'riovalidator' => '/src/validators/RIOValidator.class.php',
                 'qrcode' => '/src/lib/QRCode.class.php',
+            	'grid' => '/src/lib/Grid.class.php',
+            	'qrcodegrid' => '/src/lib/QRCodeGrid.class.php',
                 'reedsolomon' => '/src/lib/ReedSolomon.class.php'
             );
         }

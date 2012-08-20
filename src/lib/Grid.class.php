@@ -4,7 +4,7 @@
 		public $height;
 		public $width;
 		
-		private $grid;
+		protected $grid;
 		
 		public function __construct($width, $height = null, $doInit = true) {
 			if ($height == null) $height = $width;
@@ -46,6 +46,30 @@
 		
 		public function setValue($x, $y, $value){
 			$this->grid[$x][$y] = $value;
+		}
+		
+		public function setLine($y, $value){
+			$line = decbin($value);
+			for($i = 0; $i < strlen($line); $i++){
+				$this->grid[$i][$y] = $line[$i];
+			}
+		}
+		public function setCol($x, $value){
+			$line = decbin($value);
+			for($i = 0; $i < strlen($line); $i++){
+				$this->grid[$x][$i] = $line[$i];
+			}
+		}
+		
+		public function invertLine($y){
+			for($i = 0; $i < $this->height; $i++){
+				$this->grid[$i][$y] = !$this->grid[$i][$y];
+			}
+		}
+		public function invertCol($x){
+			for($i = 0; $i < $this->height; $i++){
+				$this->grid[$x][$i] = !$this->grid[$x][$i];
+			}
 		}
 		
 		public function exportToMatrix(){

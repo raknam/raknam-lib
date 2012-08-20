@@ -1,6 +1,6 @@
 <?php
 
-require_once('Grid.class.php');
+require_once('QRCodeGrid.class.php');
 require_once('ReedSolomon.class.php');
 
 	class QRCode {
@@ -16,11 +16,19 @@ require_once('ReedSolomon.class.php');
 		static  $ERRORCODE_SIZES = array(
 			"1" => array(7,10,13,17), "2" => array(10,16,22,28),
 		);
+		
+		/**
+		 * @var QRCodeGrid
+		 */
 		private $grid;
+		
+		/**
+		 * @var ReedSolomon
+		 */
 		private $rs;
 		
-		public function __construct(){
-			$this->grid = new Grid(21);
+		public function __construct($version = 1){
+			$this->grid = new QRCodeGrid($version);
 			//$this->grid->setValue(1,1,1);
 			//$this->grid->setValue(10,10,1);
 			$this->setFinders();
@@ -220,6 +228,7 @@ require_once('ReedSolomon.class.php');
 		 */
 		public function generateGrid($data, $version, $quality){
 		    
+			return $this->grid;
 		}
 		/**** end ENCODING ****/
 	}
