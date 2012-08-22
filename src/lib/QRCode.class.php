@@ -1,6 +1,6 @@
 <?php
 
-require_once('Grid.php');
+require_once('QRCodeGrid.class.php');
 require_once('ReedSolomon.class.php');
 
 	class QRCode {
@@ -16,13 +16,20 @@ require_once('ReedSolomon.class.php');
 		static  $ERRORCODE_SIZES = array(
 			"1" => array(7,10,13,17), "2" => array(10,16,22,28),
 		);
+		
+		/**
+		 * @var QRCodeGrid
+		 */
 		private $grid;
+		
+		/**
+		 * @var ReedSolomon
+		 */
 		private $rs;
 		
-		public function __construct(){
-			$this->grid = new Grid(21);
-			//$this->grid->setValue(1,1,1);
-			//$this->grid->setValue(10,10,1);
+		public function __construct($version = 1){
+			$this->grid = new QRCodeGrid($version);
+			$this->grid->setValue(8,$this->grid->height - 8,1);
 			$this->setFinders();
 			$this->setTimePatterns();
 			$this->rs = ReedSolomon::GetInstance();
@@ -176,7 +183,14 @@ require_once('ReedSolomon.class.php');
 		private function getBitstream(&$mode, &$char_count, &$data) {
 			return sprintf("%s%s%s0000", $mode, $char_count, implode("",$data));
 		}
-		public function getCodewords(&$data, $version, $quality){
+		/**
+		 * Generate codewords from bitstream
+		 * @param String $data
+		 * @param int $version
+		 * @param char $quality
+		 * @return array Return an array of decimal
+		 */
+		public function generateCodewordsFromBitstream(&$data, $version, $quality){
 			$groups = str_split($data, 8);
 			if (strlen($groups[count($groups) - 1]) < 8)
 				$groups[count($groups) - 1] = str_pad($groups[count($groups) - 1], 8, "0");
@@ -188,15 +202,34 @@ require_once('ReedSolomon.class.php');
 				$groups[] = self::$CODEWORD_PADDING[$odd];
 				$odd = !$odd;
 			}
-				
+
+			foreach($groups as $k => $d) $groups[$k] = bindec($d);
 			return $groups;
 		}
-		public function calculateErrorCorrection(&$data, $version, $quality) {
-		    foreach($data as $k => $d) $data[$k] = bindec($d);
+		
+		/**
+		 * Calculate Error Corrections Bits using ReedSolomon Algorithm
+		 * @param array $data
+		 * @param int $version
+		 * @param char $quality
+		 * @return array
+		 */
+		public function calculateErrorCorrection($data, $version, $quality) {
 		    $data = $this->rs->rs_encode_msg($data, 10);
-		    
-		    foreach($data as $k => $d) $data[$k] = str_pad(decbin($d), 8, "0", STR_PAD_LEFT);
-		    return implode('', $data);
+		    return $data;
+		}
+		
+		/**
+		 * @param array $data
+		 * @param int $version
+		 * @param char $quality
+		 * @return Grid
+		 */
+		public function generateGrid($data, $version, $quality){
+    		for ($i = 0; $i < count($data); $i++){
+    			$this->grid->setDataBlock($i, $data[$i]);
+    		}
+			return $this->grid;
 		}
 		/**** end ENCODING ****/
 	}
