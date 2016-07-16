@@ -10,6 +10,7 @@ spl_autoload_register(
                 'raknam\lib\algorithm' => '/src/lib/Algorithm.class.php',
                 'raknam\validators\siretvalidator' => '/src/validators/SIRETValidator.class.php',
                 'raknam\validators\riovalidator' => '/src/validators/RIOValidator.class.php',
+                'raknam\validators\ean13validator' => '/src/validators/EAN13Validator.class.php',
             );
         }
         $cn = strtolower($class);
