@@ -5,7 +5,7 @@ class CreditCardValidatorTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->validator = new CreditCardValidator();
+        $this->validator = new \Raknam\Validators\CreditCardValidator();
     }
 
     public function testCheck()

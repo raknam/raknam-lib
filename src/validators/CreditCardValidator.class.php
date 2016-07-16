@@ -1,4 +1,7 @@
 <?php
+
+namespace Raknam\Validators;
+
 class CreditCardValidator
 {
     function validate($cc, $debug = false) {

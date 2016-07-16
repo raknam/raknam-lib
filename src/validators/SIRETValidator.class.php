@@ -1,9 +1,13 @@
 <?php
 
-class SIRETValidator extends RaknamValidator {
+namespace Raknam\Validators;
+
+use Raknam\Lib\Validator;
+
+class SIRETValidator extends Validator {
     
     private $siret;
-    
+
     private function _initData($siret) {
         $this->siret = $siret;
     }
@@ -32,10 +36,11 @@ class SIRETValidator extends RaknamValidator {
     }
     
     public function toStringLastCheck($webres = false) {
-        $res = $siret." : ".$luhn." - ".($luhn % 10 == 0 ? "valid" : "invalid")."\n\n";
-        $res.= "SIREN: ".substr($siret, 0, 3)." ".substr($siret, 3, 3)." ".substr($siret, 6, 3)."\n";
-        $res.= "#Etablissement: ".substr($siret, 9, 4)."\n";
-        $res.= "Checksum: ".substr($siret, -1);
+        $luhn = $this->_checksumCalc();
+        $res = $this->siret." : ".$luhn." - ".($luhn % 10 == 0 ? "valid" : "invalid")."\n\n";
+        $res.= "SIREN: ".substr($this->siret, 0, 3)." ".substr($this->siret, 3, 3)." ".substr($this->siret, 6, 3)."\n";
+        $res.= "#Etablissement: ".substr($this->siret, 9, 4)."\n";
+        $res.= "Checksum: ".substr($this->siret, -1);
         
         return $webres?nl2br($res):$res;
     }

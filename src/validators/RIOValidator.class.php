@@ -1,6 +1,10 @@
 <?php
 
-class RIOValidator extends RaknamValidator {
+namespace Raknam\Validators;
+
+use Raknam\Lib\Validator;
+
+class RIOValidator extends Validator {
     
     private $oo;
     private $quality;

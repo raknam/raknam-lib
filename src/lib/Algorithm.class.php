@@ -1,4 +1,7 @@
 <?php
+
+namespace Raknam\Lib;
+
 class Algorithm
 {
     public static function Luhn($data) {

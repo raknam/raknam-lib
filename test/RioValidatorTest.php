@@ -5,7 +5,7 @@ class RioValidatorTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->validator = new RioValidator();
+        $this->validator = new \Raknam\Validators\RIOValidator();
     }
 
     public function testCheckA() {

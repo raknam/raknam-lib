@@ -5,7 +5,7 @@ class SIRETCardValidatorTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->validator = new SIRETValidator();
+        $this->validator = new \Raknam\Validators\SIRETValidator();
     }
 
     public function testCheck()

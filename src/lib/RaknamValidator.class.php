@@ -1,8 +1,10 @@
 <?php
 
-abstract class RaknamValidator {
+namespace Raknam\Lib;
 
-    private $lastException;
+abstract class Validator {
+
+    protected $lastException;
     
     public function getLastException() {
         return $this->lastException;

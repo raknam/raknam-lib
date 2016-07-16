@@ -1,6 +1,10 @@
 <?php
 
-class FrenchSocialSecurityValidator extends RaknamValidator {
+namespace Raknam\Validators;
+
+use Raknam\Lib\Validator;
+
+class FrenchSocialSecurityValidator extends Validator {
 
     private $sex;
     private $year;
@@ -40,7 +44,7 @@ class FrenchSocialSecurityValidator extends RaknamValidator {
         if ($this->month > 42 || $this->month == 0)       throw new Exception("Invalid Month");
         if ($this->dept == 96)                            throw new Exception("Invalid Dept");
         if ($this->dept == 97 || $this->dept == 98) {
-            $city = substr($this->$city, -2);
+            $city = substr($this->city, -2);
             if ($city == 0 || $city > 90)                 throw new Exception("Invalid City");
         } else {
             if ($this->city == 0 || $this->city > 990)    throw new Exception("Invalid City");
