@@ -7,5 +7,10 @@
     </testsuite>
   </testsuites>
 
+  <filter>
+    <whitelist processUncoveredFilesFromWhitelist="true">
+    </whitelist>
+  </filter>
+
 </phpunit>
 
