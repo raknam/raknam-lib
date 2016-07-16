@@ -2,6 +2,8 @@
 
 namespace Raknam\Validators;
 
+use Raknam\Lib\Algorithm;
+
 class CreditCardValidator
 {
     function validate($cc, $debug = false) {

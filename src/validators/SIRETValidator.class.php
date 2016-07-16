@@ -2,6 +2,7 @@
 
 namespace Raknam\Validators;
 
+use Raknam\Lib\Algorithm;
 use Raknam\Lib\Validator;
 
 class SIRETValidator extends Validator {
