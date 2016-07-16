@@ -4,12 +4,12 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-            	'raknamvalidator' => '/src/lib/RaknamValidator.class.php',    
-            	'creditcardvalidator' => '/src/validators/CreditCardValidator.class.php',
-                'frenchsocialsecurityvalidator' => '/src/validators/FrenchSocialSecurityValidator.class.php',
-                'algorithm' => '/src/lib/Algorithm.class.php',
-                'siretvalidator' => '/src/validators/SIRETValidator.class.php',
-                'riovalidator' => '/src/validators/RIOValidator.class.php',
+            	'raknam\lib\validator' => '/src/lib/Validator.class.php',
+            	'raknam\validators\creditcardvalidator' => '/src/validators/CreditCardValidator.class.php',
+                'raknam\validators\frenchsocialsecurityvalidator' => '/src/validators/FrenchSocialSecurityValidator.class.php',
+                'raknam\lib\algorithm' => '/src/lib/Algorithm.class.php',
+                'raknam\validators\siretvalidator' => '/src/validators/SIRETValidator.class.php',
+                'raknam\validators\riovalidator' => '/src/validators/RIOValidator.class.php',
             );
         }
         $cn = strtolower($class);
